@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Мой Проект{% endblock %}</title>
+</head>
+<body>
+    <nav>
+        <a href="{% url 'home' %}">Главная</a> | 
+        <a href="{% url 'employee_list' %}">Все сотрудники</a>
+        {% if user.is_authenticated %}
+            | Вы вошли как {{ user.username }}
+        {% endif %}
+    </nav>
+    <hr>
+    
+    {% block content %}
+    <!-- Сюда будет вставляться содержимое дочерних страниц -->
+    {% endblock %}
+</body>
+</html>

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Главная{% endblock %}
+{% block content %}
+    <h1>Добро пожаловать в команду!</h1>
+    <p>Описание проекта: Это учебный проект по управлению сотрудниками и рабочими местами.</p>
+    
+    <h2>Всего сотрудников: {{ total_employees }}</h2>
+    
+    <h2>Последние принятые сотрудники:</h2>
+    {% for employee in employees %}
+        {% include "employees/_employee_card.html" %}
+    {% endfor %}
+{% endblock %}

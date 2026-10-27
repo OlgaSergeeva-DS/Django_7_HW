@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Сотрудник: {{ employee.last_name }}{% endblock %}
+{% block content %}
+    <h1>{{ employee.last_name }} {{ employee.first_name }} {{ employee.patronymic }}</h1>
+    <p><strong>Пол:</strong> {{ employee.get_gender_display }}</p>
+    <p><strong>Стаж:</strong> {{ employee.experience_days }} дней</p>
+    
+    <!-- Заглавное фото -->
+    {% with first_image=employee.images.first %}
+        {% if first_image %}
+            <img src="{{ first_image.image.url }}" alt="Заглавное фото" style="max-width: 300px; height: auto;">
+        {% endif %}
+    {% endwith %}
+    
+    <!-- Номер стола -->
+    <p><strong>Рабочее место:</strong>
+        {% if employee.workplace %}
+            Стол №{{ employee.workplace.desk_number }}
+        {% else %}
+            Не закреплено
+        {% endif %}
+    </p>
+    
+    <h3>Навыки:</h3>
+    <ul>
+        {% for emp_skill in employee.employeeskill_set.all %}
+            <li>{{ emp_skill.skill.name }} — Уровень: {{ emp_skill.level }}/10</li>
+        {% empty %}
+            <li>Навыки не указаны.</li>
+        {% endfor %}
+    </ul>
+    
+    <h3>Галерея (без первого фото):</h3>
+    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        {% for image in employee.images.all|slice:"1:" %}
+            <div>
+                <img src="{{ image.image.url }}" alt="Фото" style="max-width: 200px; height: auto;">
+                <p style="text-align: center;">Порядок: {{ image.order }}</p>
+            </div>
+        {% empty %}
+            <p>Дополнительных фотографий нет.</p>
+        {% endfor %}
+    </div>
+    
+    <a href="{% url 'employee_list' %}">Назад к списку</a>
+{% endblock %}

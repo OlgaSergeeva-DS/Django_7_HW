@@ -1,0 +1,26 @@
+<div style="border: 1px solid #ccc; padding: 10px; margin: 10px; display: flex; gap: 10px;">
+    <!-- Первое изображение галереи -->
+    <div>
+        {% with first_image=employee.images.first %}
+            {% if first_image %}
+                <img src="{{ first_image.image.url }}" alt="Фото" style="width: 100px; height: 100px; object-fit: cover;">
+            {% else %}
+                <div style="width: 100px; height: 100px; background: #eee; display: flex; align-items: center; justify-content: center;">Нет фото</div>
+            {% endif %}
+        {% endwith %}
+    </div>
+    
+    <div>
+        <h3>{{ employee.last_name }} {{ employee.first_name }}</h3>
+        <p><strong>Навыки:</strong>
+            {% for emp_skill in employee.employeeskill_set.all %}
+                {{ emp_skill.skill.name }} ({{ emp_skill.level }})
+                {% if not forloop.last %}, {% endif %}
+            {% empty %}
+                Нет навыков
+            {% endfor %}
+        </p>
+        <p><strong>Стаж:</strong> {{ employee.experience_days }} дней</p>
+        <a href="{% url 'employee_detail' employee.pk %}">Подробнее...</a>
+    </div>
+</div>
